@@ -61,14 +61,15 @@ def only_predict():
             i = 0
             j += 1
             print()
+        j = 1
 
 
-skipToUse = True
+skipToUse = False
 MaxCounter = 500
 Step = 50
-Batch_size = 100
+Batch_size = 500
 Shape = (50, 50)
-Epochs = 5
+Epochs = 3
 
 Path = "Data/Users/test"
 textsPath = "Data/Texts"
@@ -86,12 +87,13 @@ print("Got Convertor")
 textToGraphs.convert_texts(myTextNames, myTexts, myAuthors, Convertor, Path)
 print("Text converted")
 
-graphsAuthors = []
+os.makedirs(Path, exist_ok=True)
+graphsWithAuthors = []
 for fileName in os.listdir(Path + "/graphs"):
     if fileName.endswith(".tuple-pickle"):
         with open(Path + "/graphs/" + fileName, 'rb') as file:
             temp = pickle.load(file)
-            graphsAuthors.append(temp)
+            graphsWithAuthors.append(temp)
 
 with open(Path + "/dicts/idToAuthor.pickle", 'rb') as file:
     idToAuthor = pickle.load(file)
@@ -104,8 +106,8 @@ print("Neuro created")
 
 iNeuro = neuroTrain.train(
     iNeuro,
-    slicer.slice_train(graphsAuthors, len(idToAuthor)),
-    slicer.get_batch_size_per_epoch(graphsAuthors),
+    slicer.slice_train(graphsWithAuthors, len(idToAuthor)),
+    slicer.get_batch_size_per_epoch(graphsWithAuthors),
     Path,
     Epochs
 )

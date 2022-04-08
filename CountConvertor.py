@@ -3,6 +3,7 @@ from nltk.stem import WordNetLemmatizer
 from string import punctuation
 
 
+# Text to Graph algorithm by count
 class CountConvertor:
     def __init__(self, maxCounter):
         self.maxCounter = maxCounter
@@ -43,7 +44,7 @@ class CountConvertor:
                 break
             wordToNum[key] = cur
             cur += 1
-
+        self.maxCounter = cur
         # lemmanized_texts --> graphTexts
         result = []
         for text in lemmanized_texts:
@@ -56,7 +57,7 @@ class CountConvertor:
             result.append(graphText)
 
         self.wordNumDict = wordToNum
-        return result, wordToNum
+        return result
 
     # convert text using old wordNumDict (for new text)
     def convert(self, text):

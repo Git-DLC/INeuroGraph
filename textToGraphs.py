@@ -30,7 +30,7 @@ def convert_texts(namesArray, textsArray, authorsArray, classConventor, path):
 
     do_tests()
 
-    convertedTexts, wordNumDict = classConventor.start(textsArray)
+    convertedTexts = classConventor.start(textsArray)
 
     authorToId = {}
     idToAuthor = {}
@@ -42,9 +42,9 @@ def convert_texts(namesArray, textsArray, authorsArray, classConventor, path):
             idToAuthor[i] = author
             i += 1
 
+    # If directory already exists: remove and make new one
     if os.path.isdir(path):
         shutil.rmtree(path)
-
     os.makedirs(path)
     i = 0
 
@@ -60,6 +60,3 @@ def convert_texts(namesArray, textsArray, authorsArray, classConventor, path):
 
     with open(path + "/dicts/idToAuthor.pickle", 'wb') as file:
         pickle.dump(idToAuthor, file)
-
-    with open(path + "/dicts/wordNum.pickle", 'wb') as file:
-        pickle.dump(wordNumDict, file)

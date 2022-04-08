@@ -1,9 +1,11 @@
 import keras
 import os
 
+
+# class for model use.
 class ModelUse:
-    def __init__(self, pathToModel, Conventor, SlicerGen):
-        self.Conventor = Conventor
+    def __init__(self, pathToModel, Convertor, SlicerGen):
+        self.Convertor = Convertor
         self.SlicerGen = SlicerGen
         self.model = keras.models.load_model(pathToModel)
 
@@ -13,6 +15,7 @@ class ModelUse:
             if fileName.endswith(".hdf5"):
                 weights.append(fileName)
 
+        # looking for the min loss
         minimum = float("inf")
         current = weights[0]
         for weight in weights:
@@ -24,10 +27,11 @@ class ModelUse:
         self.model.load_weights(path + "/weights/" + current)
 
     def predict(self, text):
-        convertedText = self.Conventor.convert(text)
+        convertedText = self.Convertor.convert(text)
 
         predictions = []
-        text_slicer = self.SlicerGen.slice_predict(convertedText)
+        slicerGen = self.SlicerGen
+        text_slicer = slicerGen.slice_predict(convertedText)
 
         # only 1 slice per prediction (could use batch_size)
         for textSlice in text_slicer:
